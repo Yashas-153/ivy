@@ -27,7 +27,6 @@ from ivy.utils.backend import current_backend
 from ivy.utils.exceptions import handle_exceptions
 
 
-@inputs_to_ivy_arrays
 @handle_out_argument
 @handle_view
 @handle_array_like_without_promotion
@@ -292,7 +291,6 @@ def ndindex(
     (1, 0)
     (1, 1)
     """
-
     args = [range(k) for k in shape]
     return _iter_product(*args)
 
@@ -953,7 +951,6 @@ def _check_arguments(
     )
 
 
-@inputs_to_ivy_arrays
 @handle_out_argument
 @handle_array_like_without_promotion
 @handle_nestable
@@ -1199,6 +1196,9 @@ def pad(
                 )
     padded = ivy.array(padded).to_native()
     return padded
+
+
+pad.mixed_function = True
 
 
 @to_native_arrays_and_back
@@ -1615,7 +1615,6 @@ def expand(
     return ivy.current_backend(x).expand(x, shape, out=out, copy=copy)
 
 
-@inputs_to_ivy_arrays
 @handle_array_like_without_promotion
 @handle_nestable
 @handle_exceptions
@@ -1670,6 +1669,9 @@ def as_strided(
         ivy.frombuffer(buffer, dtype=x.dtype, count=size),
         shape,
     )
+
+
+as_strided.mixed_function = True
 
 
 @to_native_arrays_and_back
@@ -1770,7 +1772,6 @@ def associative_scan(
     reverse: bool = False,
     axis: int = 0,
 ) -> ivy.Array:
-
     """
     Perform an associative scan over the given array.
 
@@ -1791,7 +1792,6 @@ def associative_scan(
         The result of the scan.
 
     """
-
     elems = [x]
 
     if reverse:
